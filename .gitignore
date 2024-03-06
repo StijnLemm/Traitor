@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# BLEMM
+blemm
+blemm.old
