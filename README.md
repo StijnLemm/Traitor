@@ -1,2 +1,2 @@
 # traitor
-Traits paradigm/example library for c++, i think.
+trying stuff with traits and templats lol.
