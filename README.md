@@ -1,5 +1,5 @@
-# traitor
-trying stuff with traits and templats lol.
+# Traitor
+trying stuff with traits and templats lol. This is what i came up with for now!
 ``` c++
 #include "Traitor"
 
