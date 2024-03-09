@@ -71,9 +71,9 @@ void do_print(VeryImportantTrait<type>& trait)
 
 int main(int argc, char** argv)
 {
-	Cat bloem;
-	do_print(bloem);
-	Dog stijn;
-	do_print(stijn);
+	Cat cat;
+	do_print(cat);
+	Dog dog;
+	do_print(dog);
 }
 

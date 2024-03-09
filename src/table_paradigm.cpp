@@ -29,9 +29,9 @@ void print()
 
 int main(int argc, char** argv)
 {
-	// Cat bloem;
-	// print<decltype(bloem)>();
-	// Dog stijn;
-	// print<decltype(stijn)>();
+	// Cat cat;
+	// print<decltype(cat)>();
+	// Dog dog;
+	// print<decltype(dog)>();
 }
 
