@@ -1,8 +1,5 @@
 #pragma once
 
-// macro induced trait system c++
-// todo, const qualifiers?
-
 // Create function arguments
 #define ARGS_0()            void
 #define ARGS_2(t1,v1)        t1 v1
@@ -12,24 +9,26 @@
 
 // Pass arguments to printf with a leading comma.
 #define PASS_0()
-#define PASS_2(t1,v1)       v1        
+#define PASS_2(t1,v1)       v1
 #define PASS_4(t1,v1,t2,v2) v1, v2
 #define PASS_N(_4,_3,_2,_1,_0,N,...)  PASS##N
 #define PASS(...)  PASS_N(_0,##__VA_ARGS__,_4,_3,_2,_1,_0)(__VA_ARGS__)
 
-#define trait(name) 											\
-template<typename Child> 										\
-struct name 												\
+#define trait(name)                                                                                     \
+template<typename Child>                                                                                \
+struct name                                                                                             \
 
-#define trait_fn(rettype, name, ...)								\
-rettype name(ARGS(__VA_ARGS__)) { return static_cast<Child&>(*this).name##_impl(PASS(__VA_ARGS__)); } 	\
+#define trait_fn(rettype, name, ...)                                                            \
+rettype name(ARGS(__VA_ARGS__)) { return static_cast<Child&>(*this).name##_impl(PASS(__VA_ARGS__)); }         \
 
-#define trait_fn_impl(rettype, name, args...)								\
-rettype name##_impl(args) 										\
+#define impl(name, trait) \
+struct name##_##trait##_impl : public name, public trait<name##_##trait##_impl>
 
-#define trait_sfn(rettype, name, args...)								\
-static rettype name(args...) { return Child::name##_impl(args); }			\
+#define impl_of(name, trait, var) (name##_##trait##_impl &)var
 
-#define trait_sfn_impl(rettype, name, args...)	\
-static rettype name##_impl(args...) 		\
+#define init_impl(name) \
+using Self = name 
+
+#define trait_fn_impl(rettype, name, args...)                                                           \
+rettype name##_impl(args)
 

@@ -3,77 +3,60 @@
 #include <string>
 #include "Traitor"
 
-trait(VeryImportantTrait)
+ 
+trait(StringAble)
 {
-	trait_fn(bool, increment);
-	trait_fn(std::string, to_string);
-	trait_fn(void, sayHello, std::string, name);
-	trait_sfn(int, GlobalConfig);
+	trait_fn(std::string, toString)
 };
 
-// impl of printable trait with cat
-class Cat : public VeryImportantTrait<Cat>
+trait(Updatable)
 {
-public:
-	trait_fn_impl(std::string, to_string)
-	{
-		return "Meow!";
-	}
+	trait_fn(void, update)
+};
 
-	trait_fn_impl(void, sayHello, std::string name)
+struct NameContainer
+{
+	std::string name;
+	size_t updateCounter = 0u;
+};
+
+impl(NameContainer, StringAble)
+{
+	trait_fn_impl(std::string, toString)
 	{
-		std::cout << "Hello from cat, to: " << name  << std::endl;
-	}
-	trait_fn_impl(bool, increment)
-	{
-		return true;
-	}
-	trait_sfn_impl(int, GlobalConfig)
-	{
-		return 1u;
+	    return this->name;
 	}
 };
 
-class Dog : public VeryImportantTrait<Dog>
+impl(NameContainer, Updatable)
 {
-public:
-	trait_fn_impl(std::string, to_string)
+	trait_fn_impl(void, update)
 	{
-		return "Woof!";
-	}
-
-	trait_fn_impl(void, sayHello, std::string name)
-	{
-		std::cout << "Hello from dog, to: " << name  << std::endl;
-	}
-	trait_fn_impl(bool, increment)
-	{
-		return true;
-	}
-	trait_sfn_impl(int, GlobalConfig)
-	{
-		return 2u;
+	    this->updateCounter++;
 	}
 };
 
 template<typename type>
-void do_print(VeryImportantTrait<type>& trait)
+void print(StringAble<type>& tr)
 {
-	std::cout << trait.to_string() << std::endl;
-	if (trait.increment())
-	{
-		std::cout << "Incremented!" << std::endl;
-	}
-	trait.sayHello("Caller");
-
-	std::cout << "Config: " << VeryImportantTrait<type>::GlobalConfig() << std::endl;
+	std::cout << tr.toString() << std::endl;
 }
 
-int main(int argc, char** argv)
+template<typename type>
+void update(Updatable<type>& up)
 {
-	Cat bloem;
-	do_print(bloem);
-	Dog stijn;
-	do_print(stijn);
+	up.update();
+}
+
+int main()
+{
+	NameContainer container;
+	container.name = "I have my own traits!";
+	print(impl_of(NameContainer, StringAble, container));
+	update(impl_of(NameContainer, Updatable, container));
+	update(impl_of(NameContainer, Updatable, container));
+	update(impl_of(NameContainer, Updatable, container));
+	
+	std::cout << "I updated " << container.updateCounter << " times." << std::endl; 
 }
 
